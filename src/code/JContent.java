@@ -11,6 +11,10 @@ public abstract class JContent {
     private List<ContentObserver> observers;
 
     public JContent(String title, String description) {
+
+        if(title.isEmpty() || description.isEmpty()) throw new IllegalArgumentException();
+
+
         this.title = title;
         this.description = description;
     }
@@ -20,6 +24,9 @@ public abstract class JContent {
     }
 
     public void setTitle(String title) {
+        if(title == null) throw new NullPointerException();
+        if(title.isEmpty()) throw new IllegalArgumentException();
+
         this.title = title;
     }
 
@@ -28,6 +35,11 @@ public abstract class JContent {
     }
 
     public void setDescription(String description) {
+        if(description == null) throw new NullPointerException();
+        if(description.isEmpty()) throw new IllegalArgumentException();
+
+
+
         this.description = description;
     }
 
