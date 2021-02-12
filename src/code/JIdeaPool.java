@@ -1,17 +1,16 @@
 package code;
 
+import org.junit.Test;
+
 import java.util.*;
 
 public class JIdeaPool {
 
 
     private Map<JTopic, Set<JIdea>> pool;
-    private Set<JIdea> setJIdeas;
 
     public JIdeaPool() {
         pool = new HashMap<>();
-        setJIdeas = new HashSet<>();
-
     }
 
 
@@ -21,46 +20,50 @@ public class JIdeaPool {
         Set<JIdea> ideasSet = new HashSet<>();
 
 
+        if (!pool.containsKey(topic)) {
+
             pool.putIfAbsent(topic, ideasSet);
+        }
+
     }
 
     public void add(JIdea idea, JTopic topic) {
         if (idea == null || topic == null) throw new NullPointerException();
 
+        Set<JIdea> set_idea= new HashSet<>();
+        Set<String> titles= new HashSet<>();
 
-        // Create a Set to Merge all sets
-        Set<JIdea> mergedSet = new HashSet<>();
+        for (Set<JIdea> d: pool.values()) {
+            set_idea.addAll(d);
 
-        // Loop in The Map
-        for (Map.Entry<JTopic, Set<JIdea>> entry : pool.entrySet()) {
-
-            //Add Every Set to the Merged Set
-            mergedSet.addAll(entry.getValue());
+        }
+        for (JIdea id:set_idea) {
+            titles.add(id.getTitle());
         }
 
 
-        // Loop in The Map < Topics ,  < Ideas > >
-        for (Map.Entry<JTopic, Set<JIdea>> entry : pool.entrySet()) {
+        if (!titles.contains(idea.getTitle()) ) {
 
-            if ( !pool.containsKey(topic) ) {
-                add(topic);
-                break;
+            if (!pool.containsKey(topic) && !pool.containsValue(idea) ) {
+                Set<JIdea> ideas= new HashSet<>();
+                ideas.add(idea);
+                pool.put(topic,ideas);
             }
 
-            // If the Topic exist in the Map
-             if  (entry.getKey() == topic) {
+            else if (pool.containsKey(topic) && pool.containsValue(idea) && !pool.get(topic).contains(idea) ) {
 
-                //Loop in the Merged Set
-                for (JIdea ideasInSet : mergedSet) {
+                    pool.get(topic).add(idea);
 
-                    // If the title of the Idea doesn't match any title in the Set
-                    if (!ideasInSet.getTitle().equals(idea.getTitle())) {
-                        //add this idea to the looping Topic
-                        entry.getValue().add(idea);
-                    }
-                }
+
             }
+            else if (pool.containsKey(topic)){
+                pool.get(topic).add(idea);
+            }
+
         }
+
+
+
 
 
 
@@ -81,15 +84,24 @@ public class JIdeaPool {
 
     public boolean remove(JIdea idea) {
 
-
         if (idea == null) throw new NullPointerException();
-        return true;
+
+        for (Set<JIdea> id: pool.values()) {
+            if (id.contains(idea)){
+                id.remove(idea);
+                return true;
+            }
+        }
+
+
+        return false;
 
     }
 
     public JIdea getIdea(String title) {
 
-        if (title == null) throw new IllegalArgumentException();
+        if (title == null) throw new NullPointerException();
+        if (title.isEmpty())throw new IllegalArgumentException();
 
 
         for (Map.Entry<JTopic, Set<JIdea>> entry : pool.entrySet()) {
@@ -113,11 +125,18 @@ public class JIdeaPool {
     }
 
     public int numberOfTopics() {
-        return 0;
+
+        return pool.size();
     }
 
     public int numberOfIdeas() {
-        return 0;
+
+        Set<JIdea> set_idea= new HashSet<>();
+        for (Set<JIdea> d: pool.values()) {
+            set_idea.addAll(d);
+        }
+
+        return set_idea.size();
     }
 
     public void removeDeclined() {
@@ -125,6 +144,8 @@ public class JIdeaPool {
     }
 
     public void removeReleased() {
+
+
 
     }
 
