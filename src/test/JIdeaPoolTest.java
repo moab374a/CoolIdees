@@ -85,6 +85,7 @@ public class JIdeaPoolTest {
 
         ideaPool.add(ideaWithExistingTitle, t2);
         assertFalse("JIdeaPool.add(JIdea, JTopic) should not add the topic to the pool if the idea is not added!",
+
                 actPool.containsKey(t2));
 
         ideaPool.add(i3, t1);
