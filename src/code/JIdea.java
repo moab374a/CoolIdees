@@ -54,27 +54,28 @@ public class JIdea extends JContent {
     }
 
     public void addAttachment(JAttachment attachment) {
+        if (attachment==null)throw new NullPointerException();
 
     }
 
     public List<JAttachment> getAttachments() {
-        List<JAttachment> temp = new ArrayList<>();
-        return temp;
+        return attachments;
+
     }
 
     public boolean removeAttachment(JAttachment attachment) {
-        if(attachment == null) throw new NullPointerException();
+        if (attachment==null)throw new NullPointerException();
         return false;
     }
 
 
     @Override
     public String toString() {
-        return null;
+        return "Idea: "+getTitle()+"\n"+getDescription();
     }
 
     @Override
     public int countObservers() {
-        return 0;
+        return attachments.size();
     }
 }

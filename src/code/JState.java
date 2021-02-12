@@ -13,7 +13,7 @@ public abstract class JState {
     }
 
     public void hold() {
-
+     throw new IllegalStateException();
     }
 
     public void release() {
@@ -44,7 +44,6 @@ public abstract class JState {
 
     public class Draft extends JState {
         public void hold() {
-
         }
 
         public void declined() {
@@ -59,7 +58,9 @@ public abstract class JState {
 
         public void evaluate(JValuation valuation){}
 
-        public void hold(){}
+        public void hold(){
+
+        }
 
         public void decline(){}
 
@@ -68,6 +69,8 @@ public abstract class JState {
     public class ApprovedIdea extends JState {
 
         public void release(){}
+
+
 
 
     }

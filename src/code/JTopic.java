@@ -14,7 +14,7 @@ public class JTopic extends JContent {
 
     @Override
     public String toString() {
-        return null;
+        return "Topic: "+getTitle()+"\n"+getDescription();
     }
 
     @Override
