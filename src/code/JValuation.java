@@ -8,11 +8,12 @@ public class JValuation extends JContent {
 
     @Override
     public String toString() {
-        return null;
+        return "Valuation: " + getTitle() + "\n" + getDescription();
     }
 
     @Override
     public int countObservers() {
         return 0;
     }
+
 }
