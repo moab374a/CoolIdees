@@ -63,6 +63,7 @@ public class JIdea extends JContent {
     }
 
     public boolean removeAttachment(JAttachment attachment) {
+        if(attachment == null) throw new NullPointerException();
         return false;
     }
 
