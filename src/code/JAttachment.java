@@ -19,6 +19,7 @@ public class JAttachment extends JContent {
 
 
     public void setFile(File file) {
+        System.out.println("hiiiii");
         if (file == null)throw new NullPointerException();
         this.file = file;
     }
