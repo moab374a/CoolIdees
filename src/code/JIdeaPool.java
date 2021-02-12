@@ -33,7 +33,7 @@ public class JIdeaPool {
 
     }
 
-    public JIdea getIdea() {
+    public JIdea getIdea(String title) {
         JIdea test = new JIdea("","");
         return test ;
     }
