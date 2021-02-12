@@ -5,11 +5,15 @@ import java.util.Set;
 
 public class JIdeaPool {
 
+
     private Map<JTopic , Set<JIdea>> pool;
 
-    public JIdeaPool(Map<JTopic, Set<JIdea>> pool) {
-        this.pool = pool;
+    public JIdeaPool()
+    {
+
     }
+
+
     public void add (JTopic topic)
     {
 
