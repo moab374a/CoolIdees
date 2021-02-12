@@ -62,7 +62,7 @@ public class JIdea extends JContent {
         return temp;
     }
 
-    public boolean removeAttachments(JAttachment attachment) {
+    public boolean removeAttachment(JAttachment attachment) {
         return false;
     }
 
