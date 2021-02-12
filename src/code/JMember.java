@@ -25,6 +25,7 @@ public class JMember implements ContentObserver {
 
     @Override
     public void update(JContent content) {
+     if (content == null)throw new NullPointerException();
 
     }
 

@@ -6,7 +6,10 @@ public class JAttachment extends JContent {
     private File file;
 
     public JAttachment(String title, String description , File file) {
+
+
         super(title, description);
+        if (file == null)throw new NullPointerException();
         this.file = file;
     }
 
@@ -16,6 +19,7 @@ public class JAttachment extends JContent {
 
 
     public void setFile(File file) {
+        if (file == null)throw new NullPointerException();
         this.file = file;
     }
 
@@ -24,9 +28,10 @@ public class JAttachment extends JContent {
         super.setTitle(title);
     }
 
+
     @Override
     public String toString() {
-        return null;
+        return "Attachment: "+ getTitle() +"\n"+ getDescription();
     }
 
     @Override
