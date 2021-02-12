@@ -71,4 +71,9 @@ public class JIdea extends JContent {
     public String toString() {
         return null;
     }
+
+    @Override
+    public int countObservers() {
+        return 0;
+    }
 }

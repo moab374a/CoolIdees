@@ -1,8 +1,14 @@
 package code;
 
+import test.ObserverTest;
+
+import java.util.List;
+
 public abstract class JContent {
     private String title;
     private String description;
+
+    private List<ContentObserver> observers;
 
     public JContent(String title, String description) {
         this.title = title;
@@ -27,4 +33,6 @@ public abstract class JContent {
 
     @Override
     public abstract String toString();
+
+    public abstract int countObservers();
 }

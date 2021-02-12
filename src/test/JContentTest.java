@@ -125,5 +125,10 @@ public class JContentTest {
         public String toString() {
             return "";
         }
+
+        @Override
+        public int countObservers() {
+            return 0;
+        }
     }
 }

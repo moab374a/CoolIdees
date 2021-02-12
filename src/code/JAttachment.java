@@ -28,4 +28,9 @@ public class JAttachment extends JContent {
     public String toString() {
         return null;
     }
+
+    @Override
+    public int countObservers() {
+        return 0;
+    }
 }
