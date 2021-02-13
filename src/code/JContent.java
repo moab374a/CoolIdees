@@ -2,32 +2,21 @@ package code;
 
 import test.ObserverTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class JContent {
     private String title;
     private String description;
 
-    private List<ContentObserver> observers;
+    private List<ContentObserver> observers = new ArrayList<>();
 
     public JContent(String title, String description) {
 
         if(title.isEmpty() || description.isEmpty()) throw new IllegalArgumentException();
 
-
         this.title = title;
         this.description = description;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        if(title == null) throw new NullPointerException();
-        if(title.isEmpty()) throw new IllegalArgumentException();
-
-        this.title = title;
     }
 
     public String getDescription() {
@@ -38,13 +27,39 @@ public abstract class JContent {
         if(description == null) throw new NullPointerException();
         if(description.isEmpty()) throw new IllegalArgumentException();
 
-
-
         this.description = description;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+
+    public void setTitle(String title) {
+        if(title == null) throw new NullPointerException();
+        if(title.isEmpty()) throw new IllegalArgumentException();
+
+        this.title = title;
+    }
+
+    public void addObserver(ContentObserver observer)
+    {
+        observers.add(observer);
+    }
+
+    public void removeObserver(ContentObserver observer)
+    {
+        observers.remove(observer);
+    }
+
+    public int countObservers()
+    {
+       return observers.size();
+    }
+
 
     @Override
     public abstract String toString();
 
-    public abstract int countObservers();
+
 }

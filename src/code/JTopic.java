@@ -1,6 +1,7 @@
 package code;
 
 public class JTopic extends JContent {
+
     private int id;
 
     public JTopic(String title, String description , int id) {
@@ -17,8 +18,5 @@ public class JTopic extends JContent {
         return "Topic: "+getTitle()+"\n"+getDescription();
     }
 
-    @Override
-    public int countObservers() {
-        return 0;
-    }
+
 }
