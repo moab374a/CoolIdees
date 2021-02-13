@@ -30,46 +30,53 @@ public class JIdeaPool {
     public void add(JIdea idea, JTopic topic) {
         if (idea == null || topic == null) throw new NullPointerException();
 
-        Set<JIdea> set_idea= new HashSet<>();
-        Set<String> titles= new HashSet<>();
+        Set<JIdea> set_idea = new HashSet<>();
+        Set<String> titles = new HashSet<>();
+        boolean test = false;
 
-        for (Set<JIdea> d: pool.values()) {
+        for (Set<JIdea> d : pool.values()) {
             set_idea.addAll(d);
 
         }
-        for (JIdea id:set_idea) {
+        for (JIdea id : set_idea) {
             titles.add(id.getTitle());
+            if (id == idea ) {
+                test=true;
+                if (!pool.containsKey(topic)) {
+                    Set<JIdea> ideas = new HashSet<>();
+                    ideas.add(idea);
+                    pool.put(topic, ideas);
+                }
+                else {
+                    pool.get(topic).add(id);
+                }
+                break;
+            }
         }
 
 
-        if (!titles.contains(idea.getTitle()) ) {
+        if (!titles.contains(idea.getTitle())) {
 
-            if (!pool.containsKey(topic) && !pool.containsValue(idea) ) {
-                Set<JIdea> ideas= new HashSet<>();
+            if (!pool.containsKey(topic) && !pool.containsValue(idea)) {
+                Set<JIdea> ideas = new HashSet<>();
                 ideas.add(idea);
-                pool.put(topic,ideas);
-            }
+                pool.put(topic, ideas);
+            } else if (pool.containsKey(topic) && pool.containsValue(idea) && !pool.get(topic).contains(idea)) {
 
-            else if (pool.containsKey(topic) && pool.containsValue(idea) && !pool.get(topic).contains(idea) ) {
-
-                    pool.get(topic).add(idea);
+                pool.get(topic).add(idea);
 
 
-            }
-            else if (pool.containsKey(topic)){
+            } else if (pool.containsKey(topic)) {
                 pool.get(topic).add(idea);
             }
-
         }
-
-
-
-
-
 
 
 
     }
+
+
+
 
 
     public boolean remove(JTopic topic) {
@@ -86,8 +93,8 @@ public class JIdeaPool {
 
         if (idea == null) throw new NullPointerException();
 
-        for (Set<JIdea> id: pool.values()) {
-            if (id.contains(idea)){
+        for (Set<JIdea> id : pool.values()) {
+            if (id.contains(idea)) {
                 id.remove(idea);
                 return true;
             }
@@ -101,7 +108,7 @@ public class JIdeaPool {
     public JIdea getIdea(String title) {
 
         if (title == null) throw new NullPointerException();
-        if (title.isEmpty())throw new IllegalArgumentException();
+        if (title.isEmpty()) throw new IllegalArgumentException();
 
 
         for (Map.Entry<JTopic, Set<JIdea>> entry : pool.entrySet()) {
@@ -131,8 +138,8 @@ public class JIdeaPool {
 
     public int numberOfIdeas() {
 
-        Set<JIdea> set_idea= new HashSet<>();
-        for (Set<JIdea> d: pool.values()) {
+        Set<JIdea> set_idea = new HashSet<>();
+        for (Set<JIdea> d : pool.values()) {
             set_idea.addAll(d);
         }
 
@@ -144,7 +151,6 @@ public class JIdeaPool {
     }
 
     public void removeReleased() {
-
 
 
     }
