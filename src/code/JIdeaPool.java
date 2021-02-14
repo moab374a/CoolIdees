@@ -32,7 +32,6 @@ public class JIdeaPool {
 
         Set<JIdea> set_idea = new HashSet<>();
         Set<String> titles = new HashSet<>();
-        boolean test = false;
 
         for (Set<JIdea> d : pool.values()) {
             set_idea.addAll(d);
@@ -41,7 +40,7 @@ public class JIdeaPool {
         for (JIdea id : set_idea) {
             titles.add(id.getTitle());
             if (id == idea ) {
-                test=true;
+
                 if (!pool.containsKey(topic)) {
                     Set<JIdea> ideas = new HashSet<>();
                     ideas.add(idea);
@@ -61,10 +60,10 @@ public class JIdeaPool {
                 Set<JIdea> ideas = new HashSet<>();
                 ideas.add(idea);
                 pool.put(topic, ideas);
+
             } else if (pool.containsKey(topic) && pool.containsValue(idea) && !pool.get(topic).contains(idea)) {
 
                 pool.get(topic).add(idea);
-
 
             } else if (pool.containsKey(topic)) {
                 pool.get(topic).add(idea);
@@ -124,8 +123,6 @@ public class JIdeaPool {
                     return id;
                 }
             }
-
-
         }
 
         return null;
