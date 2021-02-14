@@ -11,9 +11,9 @@ public class JMember implements ContentObserver {
 
 
     public void subscribe(JTopic topic) {
-
+        Objects.requireNonNull(topic);
         topic.addObserver(this);
-        topics.add(topic);
+        this.topics.add(topic);
     }
 
 
@@ -31,15 +31,12 @@ public class JMember implements ContentObserver {
     public void update(JContent content) {
         if (content == null) throw new NullPointerException();
         for (JTopic topic : topics) {
-            if(topic instanceof  JTopic)
+            if(topic != null)
             {
+                topic.notify();
                 System.out.println("The topic " + topic.getId() + " has been updated!");
             }
-
         }
-
-
-
     }
 
 

@@ -34,8 +34,4 @@ public class JAttachment extends JContent {
         return "Attachment: "+ getTitle() +"\n"+ getDescription();
     }
 
-    @Override
-    public int countObservers() {
-        return 0;
-    }
 }
