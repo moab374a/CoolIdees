@@ -1,189 +1,264 @@
 package code;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class JIdea extends JContent {
 
+    private JState state;
     private List<JAttachment> attachments;
 
-    private JState state;
-
-
     public JIdea(String title, String description) {
-
         super(title, description);
-
-        attachments = new ArrayList<>();
-        this.state= new Draft();
-
+        this.state = new Draft();
+        this.attachments = new LinkedList<>();
     }
 
-
     public void discuss(String text) {
-
+        this.state.discuss(text);
     }
 
     public void evaluate(JValuation valuation) {
-
+        this.state.evaluate(valuation);
     }
 
     public void hold() {
-
+        this.state.hold();
     }
 
     public void release() {
-
-        this.state= new ReleaseIdea();
+        this.state.release();
     }
 
     public void decline() {
-
-        this.state= new DeclinedIdea();
+        this.state.decline();
     }
 
     public boolean isDeclined() {
-        if (state instanceof DeclinedIdea) {
-            return true;
-        }
-        return false;
+        return Utils.isInstance(this.state, DeclinedIdea.class);
     }
 
     public boolean isReleased() {
-        if (state instanceof ReleaseIdea) {
-            return true;
-        }
-        return false;
+        return Utils.isInstance(this.state, ReleasedIdea.class);
     }
 
     public String getCurrentDiscussion() {
-        return "";
+        return this.state.getCurrentDiscussion();
     }
 
     public JValuation getValuation() {
-        return null;
+        return this.state.getValuation();
     }
 
     public void addAttachment(JAttachment attachment) {
-        if (attachment==null)throw new NullPointerException();
-        attachments.add(attachment);
-
+        Objects.requireNonNull(attachment);
+        this.attachments.add(attachment);
     }
 
     public List<JAttachment> getAttachments() {
-        return attachments;
-
+        return this.attachments;
     }
 
     public boolean removeAttachment(JAttachment attachment) {
-        if (attachment==null)throw new NullPointerException();
-
-
-        if (attachments.contains(attachment)) {
-            attachments.remove(attachment);
-            return true;
-        }
-        return false;
+        Objects.requireNonNull(attachment);
+        return attachments.remove(attachment);
     }
-
 
     @Override
     public String toString() {
-        return "Idea: "+getTitle()+"\n"+getDescription();
+        return "Idea: " + super.getTitle() + '\n' + super.getDescription();
+    }
+
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        JIdea idea = (JIdea) object;
+        return Objects.equals(idea.getTitle(), this.getTitle()) &&
+                Objects.equals(idea.getDescription(), this.getDescription());
     }
 
     @Override
-    public int countObservers() {
-        return attachments.size();
+    public int hashCode() {
+        return Objects.hash(this.getTitle(), this.getDescription());
     }
 
 
-    public abstract  class JState {
-
+    // ----------------------------------------------- abstarct
+    public abstract class JState {
         private JValuation valuation;
+        private String currentDiscussion = "";
 
-        public void discuss(String text) {
+        public void hold() {
+        }
 
+        ;
+
+        public void release() {
+        }
+
+        ;
+
+        public void decline() {
+        }
+
+        ;
+
+        public void discuss(String currentDiscussion) {
+            Validator.checkParam(currentDiscussion);
+            this.currentDiscussion += currentDiscussion + '\n';
         }
 
         public void evaluate(JValuation valuation) {
-
-        }
-
-        public void hold() {
-            throw new IllegalStateException();
-        }
-
-        public void release() {
-
-        }
-
-        public void decline() {
-
+            this.valuation = Objects.requireNonNull(valuation);
         }
 
         public String getCurrentDiscussion() {
-            return "";
-        }
-
-        public void setCurrentDiscussion(String currentDiscussion) {
-
+            return currentDiscussion;
         }
 
         public JValuation getValuation() {
             return valuation;
         }
 
+        public void setCurrentDiscussion(String currentDiscussion) {
+            this.currentDiscussion = Validator.checkParam(currentDiscussion);
+        }
+
         public void setValuation(JValuation valuation) {
-            this.valuation = valuation;
+            this.valuation = Objects.requireNonNull(valuation);
         }
     }
-        //__________________________________________________
 
-        public class Draft extends JState {
+    public class Draft extends JState {
 
-
-            public void hold() {
-                state= new OpenDraft();
-            }
-
-            public void declined() {
-
-            }
-
+        @Override
+        public void hold() {
+            state = new OpenDraft();
         }
 
-        public class OpenDraft extends JState {
-
-            public void discuss(String text){}
-
-            public void evaluate(JValuation valuation){}
-
-            public void hold(){
-
-            }
-
-            public void decline(){
-
-
-            }
-
+        @Override
+        public void decline() {
+            state = new DeclinedIdea();
         }
 
-        public class ApprovedIdea extends JState {
-
-            public void release(){}
-
+        @Override
+        public void discuss(String text) {
+            throw new IllegalStateException("Can be discussed: This is only Draft");
         }
 
-        public class ReleaseIdea extends JState
-        {
-
-        }
-        public class DeclinedIdea extends JState
-        {
-
+        @Override
+        public void evaluate(JValuation valuation) {
+            throw new IllegalStateException("Can be evaluated: This is only Draft");
         }
 
+        @Override
+        public void release() {
+            throw new IllegalStateException("Can be released: This is only Draft");
+        }
     }
+
+    public class OpenDraft extends JState {
+        @Override
+        public void decline() {
+            state = new DeclinedIdea();
+        }
+
+        @Override
+        public void hold() {
+            state = new ApprovedIdea();
+        }
+
+        @Override
+        public void release() {
+            throw new IllegalStateException("Cannot be released yet: OpenDraft only");
+        }
+    }
+
+    public class DeclinedIdea extends JState {
+        @Override
+        public void hold() {
+            throw new IllegalStateException("Idea is declined. You can't hold it");
+        }
+
+        @Override
+        public void decline() {
+            throw new IllegalStateException("Idea is declined. You can't decline it");
+        }
+
+        @Override
+        public void discuss(String currentDiscussion) {
+            throw new IllegalStateException("Idea is declined. You can't discuss it");
+        }
+
+        @Override
+        public void evaluate(JValuation valuation) {
+            throw new IllegalStateException("Idea is declined. You can't evaluate it");
+        }
+
+        @Override
+        public void release() {
+            throw new IllegalStateException("Idea is declined. You can't release it");
+        }
+    }
+
+
+    public class ApprovedIdea extends JState {
+        @Override
+        public void hold() {
+            throw new IllegalStateException("Idea is Approved. You can't hold it");
+        }
+
+        @Override
+        public void decline() {
+            throw new IllegalStateException("Idea is Approved. You can't decline it");
+        }
+
+        @Override
+        public void discuss(String currentDiscussion) {
+            throw new IllegalStateException("Idea is Approved. You can't discuss it");
+        }
+
+        @Override
+        public void evaluate(JValuation valuation) {
+            throw new IllegalStateException("Idea is Approved. You can't evaluate it");
+        }
+
+        @Override
+        public void release() {
+            state = new ReleasedIdea();
+        }
+    }
+
+    public class ReleasedIdea extends JState {
+        @Override
+        public void hold() {
+            throw new IllegalStateException("Cannot be holed: ReleasedIdea");
+        }
+
+        @Override
+        public void release() {
+            throw new IllegalStateException("Cannot be released: ReleasedIdea");
+        }
+
+        @Override
+        public void decline() {
+            throw new IllegalStateException("Idea is already released!");
+        }
+
+        @Override
+        public void discuss(String currentDiscussion) {
+            throw new IllegalStateException("Idea is Released. You can't discuss it");
+        }
+
+        @Override
+        public void evaluate(JValuation valuation) {
+            throw new IllegalStateException("Idea is Released. You can't evaluate it");
+        }
+    }
+
+}
 
