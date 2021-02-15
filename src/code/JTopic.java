@@ -13,6 +13,11 @@ public class JTopic extends JContent {
         return id;
     }
 
+
+
+
+
+
     @Override
     public String toString() {
         return "Topic: "+getTitle()+"\n"+getDescription();

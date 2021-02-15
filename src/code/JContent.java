@@ -3,13 +3,18 @@ package code;
 import test.ObserverTest;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public abstract class JContent {
+
+
+
     private String title;
     private String description;
 
-    private List<ContentObserver> observers = new ArrayList<>();
+    private Set<ContentObserver> observers = new HashSet<>();
 
     public JContent(String title, String description) {
 
@@ -17,6 +22,7 @@ public abstract class JContent {
 
         this.title = title;
         this.description = description;
+
     }
 
     public String getDescription() {
@@ -28,6 +34,8 @@ public abstract class JContent {
         if(description.isEmpty()) throw new IllegalArgumentException();
 
         this.description = description;
+
+        notifyall();
     }
 
     public String getTitle() {
@@ -36,10 +44,13 @@ public abstract class JContent {
 
 
     public void setTitle(String title) {
+
         if(title == null) throw new NullPointerException();
         if(title.isEmpty()) throw new IllegalArgumentException();
-
         this.title = title;
+
+        notifyall();
+
     }
 
     public void addObserver(ContentObserver observer)
@@ -57,6 +68,15 @@ public abstract class JContent {
        return observers.size();
     }
 
+
+
+
+    public void notifyall()
+    {
+        for (ContentObserver observer : observers) {
+            observer.update(this);
+        }
+    }
 
     @Override
     public abstract String toString();

@@ -27,18 +27,17 @@ public class JMember implements ContentObserver {
         return topics;
     }
 
+
+    // looping in The Supscreped Topics
     @Override
     public void update(JContent content) {
-        if (content == null) throw new NullPointerException();
-        for (JTopic topic : topics) {
-            if(topic != null)
-            {
-                topic.notify();
-                System.out.println("The topic " + topic.getId() + " has been updated!");
-            }
-        }
+        if (content instanceof JTopic)
+            System.out.println("The topic "
+                    + ((JTopic) content).getId() + " has been updated!");
     }
 
-
-
 }
+
+
+
+

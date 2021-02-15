@@ -95,13 +95,11 @@ public class JIdeaPool {
         for (Set<JIdea> id : pool.values()) {
             if (id.contains(idea)) {
                 id.remove(idea);
+                remove(idea);
                 return true;
             }
         }
-
-
         return false;
-
     }
 
     public JIdea getIdea(String title) {
@@ -144,11 +142,16 @@ public class JIdeaPool {
     }
 
     public void removeDeclined() {
-
+        //x = JIdeas // f(x) after the arrow
+        for (Set<JIdea> jIdeas : pool.values()) {
+            jIdeas.removeIf(JIdea::isDeclined);
+        }
     }
 
     public void removeReleased() {
-
+        for (Set<JIdea> jIdeas : pool.values()) {
+            jIdeas.removeIf(JIdea::isReleased);
+        }
 
     }
 

@@ -71,22 +71,6 @@ public class JIdea extends JContent {
         return "Idea: " + super.getTitle() + '\n' + super.getDescription();
     }
 
-
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        JIdea idea = (JIdea) object;
-        return Objects.equals(idea.getTitle(), this.getTitle()) &&
-                Objects.equals(idea.getDescription(), this.getDescription());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.getTitle(), this.getDescription());
-    }
-
-
     // ----------------------------------------------- abstarct
     public abstract class JState {
         private JValuation valuation;
